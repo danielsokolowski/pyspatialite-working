@@ -175,7 +175,8 @@ def get_setup_args():
             license = "zlib/libpng license",
             platforms = "ALL",
             url = "http://pyspatialite.googlecode.com/",
-            download_url = "http://code.google.com/p/pyspatialite/downloads/list",
+            # no download_url, since pypi hosts it!
+            #download_url = "http://code.google.com/p/pyspatialite/downloads/list",
 
             # Description of the modules and packages in the distribution
             package_dir = {"pyspatialite": "lib"},
