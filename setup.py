@@ -44,7 +44,7 @@ sources = ["src/module.c", "src/connection.c", "src/cursor.c", "src/cache.c",
 
 include_dirs = []
 library_dirs = []
-libraries = ['geos','geos_c','proj','iconv']
+libraries = ['geos','geos_c','proj']
 runtime_library_dirs = []
 extra_objects = []
 define_macros = []
@@ -92,10 +92,10 @@ def get_amalgamation():
     print "Downloading amalgation."
 
     # find out what's current amalgamation ZIP file
-    download_page = urllib.urlopen("http://www.gaia-gis.it/spatialite/sources.html").read()
+    download_page = urllib.urlopen("http://www.gaia-gis.it/spatialite-2.3.1/sources.html").read()
     pattern = re.compile("(libspatialite-amalgamation.*?\.zip)")
     download_file = pattern.findall(download_page)[0]
-    amalgamation_url = "http://www.gaia-gis.it/spatialite/" + download_file
+    amalgamation_url = "http://www.gaia-gis.it/spatialite-2.3.1/" + download_file
     zip_dir = string.replace(download_file,'.zip','')
     # and download it
     urllib.urlretrieve(amalgamation_url, "tmp.zip")
@@ -114,6 +114,16 @@ class MyBuildExt(build_ext):
 
     def build_extension(self, ext):
         get_amalgamation()
+        # sometimes iconv is built in, sometimes it isn't
+        if not self.compiler.has_function("iconv"):
+          ext.libraries.append("iconv")
+
+        #Default locations for Mac
+        ext.include_dirs.append("/Library/Frameworks/GEOS.framework/unix/include/")
+        ext.include_dirs.append("/Library/Frameworks/PROJ.framework/unix/include/")
+        ext.library_dirs.append("/Library/Frameworks/GEOS.framework/unix/lib")
+        ext.library_dirs.append("/Library/Frameworks/PROJ.framework/unix/lib")
+
         ext.define_macros.append(("SQLITE_ENABLE_FTS3", "1"))   # build with fulltext search enabled
         ext.define_macros.append(("SQLITE_ENABLE_RTREE", "1"))   # build with fulltext search enabled
         ext.define_macros.append(("SQLITE_ENABLE_COLUMN_METADATA", "1"))   # build with fulltext search enabled
