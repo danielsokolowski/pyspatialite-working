@@ -1,5 +1,5 @@
 syntax: glob
-amalgamation
+# amalgamation # we store a local 3.0.1  version now as author no longer provides this for version 4.x
 build
 dist/*
 pysqlite.egg-info/

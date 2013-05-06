@@ -85,7 +85,13 @@ class DocBuilder(Command):
 AMALGAMATION_ROOT = "amalgamation"
 
 def get_amalgamation():
-    """Download the Spatialite amalgamation if it isn't there, already."""
+    """
+    Download the Spatialite amalgamation if it isn't there, already.
+    
+    FIXME: as of version 4.0 the author seems to no longer offer an amalgamation file so we are including the latest
+    	   libspatialite-amalgamation-3.0.1 available from http://www.gaia-gis.it/gaia-sins/libspatialite-sources/ so
+    	   the proper would be to use SQLite's amalgamation file. 
+    """
     if os.path.exists(AMALGAMATION_ROOT):
         return
     os.mkdir(AMALGAMATION_ROOT)
